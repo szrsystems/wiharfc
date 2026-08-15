@@ -11,27 +11,26 @@ const CONFIG = {
   STOCK_LEFT: 20,                // hány db van még — állítsd át, ha fogy
   SOLD_OUT: false,               // true = "ELFOGYOTT", a gomb letiltva
 
-  /* ---- STRIPE PAYMENT LINK ----------------------------------
-     1) Stripe Dashboard → Payment links → New
-     2) Termék: "Wihar FC hivatalos mez", ár: 13 499 HUF
-     3) Másold ide a linket (https://buy.stripe.com/...)
+  /* ---- HOGYAN LEHET RENDELNI? ------------------------------
+     'vinted' = a MEGRENDELEM gomb a rendeles.html oldalra visz,
+                ahol a vevő átmásolja a rendelését és a Vintedre megy
+     'stripe' = bankkártyás fizetés (töltsd ki a STRIPE_LINK-et)
+     'email'  = előre kitöltött e-mailt nyit
+  ------------------------------------------------------------ */
+  ORDER_MODE: 'vinted',
 
-     Ha MÉRETENKÉNT külön linket csinálsz (ez a jobb, mert a
-     Stripe így tudja külön számolni a készletet), töltsd ki a
-     STRIPE_LINK_BY_SIZE-t. Ha egy link van mindenre, csak a
-     STRIPE_LINK-et töltsd ki.
+  /* ---- Vinted ---- */
+  VINTED_URL: 'https://www.vinted.hu/member/242944965-wihar-fc',
 
-     ⚠️ Amíg egyik sincs kitöltve, a gomb e-mailes rendelést nyit,
-        tehát az oldal az első perctől működik.
+  /* ---- STRIPE (most nincs használatban, de itt marad) -------
+     Ha később átállsz kártyás fizetésre: ORDER_MODE: 'stripe',
+     és told be ide a Payment Link-et (https://buy.stripe.com/...).
+     Méretenként külön link is mehet a STRIPE_LINK_BY_SIZE-ba.
   ------------------------------------------------------------ */
   STRIPE_LINK: '',
   STRIPE_LINK_BY_SIZE: {
     // 'XS':  'https://buy.stripe.com/...',
-    // 'S':   'https://buy.stripe.com/...',
     // 'M':   'https://buy.stripe.com/...',
-    // 'L':   'https://buy.stripe.com/...',
-    // 'XL':  'https://buy.stripe.com/...',
-    // '2XL': 'https://buy.stripe.com/...',
   },
 
   /* ---- elérhetőség ---- */
@@ -276,7 +275,7 @@ const CONFIG = {
     return true;
   }
 
-  // Stripe client_reference_id: csak [A-Za-z0-9_-], max 200 karakter
+  // Rendelésazonosító: csak [A-Za-z0-9_-] (Stripe client_reference_id kompatibilis)
   function refCode() {
     const strip = s => (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^A-Za-z0-9]/g, '');
     const parts = ['WIHAR', strip(state.size) || 'NA'];
@@ -286,13 +285,33 @@ const CONFIG = {
     return (parts.join('-') + '-' + rnd).slice(0, 200);
   }
 
+  function orderQuery(ref) {
+    const q = new URLSearchParams();
+    q.set('meret', state.size);
+    q.set('mod', state.mode);
+    if (state.mode !== 'none') {
+      q.set('nev', state.name);
+      q.set('szam', state.num);
+    }
+    q.set('ar', String(CONFIG.PRICE));
+    q.set('ref', ref);
+    return q.toString();
+  }
+
   function checkout() {
     if (!validate()) return;
     const ref = refCode();
+
+    /* ---- 1) Vinted (jelenlegi mód) ---- */
+    if (CONFIG.ORDER_MODE === 'vinted') {
+      window.location.href = 'rendeles.html?' + orderQuery(ref);
+      return;
+    }
+
+    /* ---- 2) Stripe ---- */
     const bySize = CONFIG.STRIPE_LINK_BY_SIZE && CONFIG.STRIPE_LINK_BY_SIZE[state.size];
     const base = bySize || CONFIG.STRIPE_LINK;
-
-    if (base && /^https:\/\//.test(base)) {
+    if (CONFIG.ORDER_MODE === 'stripe' && base && /^https:\/\//.test(base)) {
       const u = new URL(base);
       u.searchParams.set('client_reference_id', ref);
       u.searchParams.set('locale', 'hu');
@@ -300,7 +319,7 @@ const CONFIG = {
       return;
     }
 
-    // Fallback: e-mailes rendelés, hogy az oldal Stripe nélkül is működjön
+    /* ---- 3) E-mail (tartalék) ---- */
     const body = [
       'Szia Wihar FC!',
       '',

@@ -24,7 +24,25 @@ no Node, no npm. It is plain HTML/CSS/JS.
 
 ---
 
-## 2. Wire up payment (Stripe)
+## 2. How ordering works right now — Vinted
+
+`ORDER_MODE: 'vinted'` in `js/app.js`. The **Megrendelem** button sends the customer to
+`rendeles.html`, carrying their choice in the URL:
+
+```
+rendeles.html?meret=L&mod=custom&nev=CSONGI&szam=7&ar=13499&ref=WIHAR-L-CSONGI-7-K4P2
+```
+
+That page shows the order, a live picture of the shirt back with their name on it, a
+copy-to-clipboard block, and a button to the Vinted profile. The customer pastes the
+block into a Vinted message so you know exactly which shirt they want.
+
+Change the Vinted link in `CONFIG.VINTED_URL`.
+
+To switch to card payment later: set `ORDER_MODE: 'stripe'` and fill in `STRIPE_LINK`.
+Nothing else changes — the Stripe code is still there.
+
+## 2b. Wire up payment (Stripe) — for later
 
 1. Stripe Dashboard → **Product catalog** → New → `Wihar FC hivatalos mez`, price `13499 HUF`.
 2. **Payment links** → New → pick that product.

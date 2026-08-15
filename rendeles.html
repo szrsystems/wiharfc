@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Rendelés — Wihar FC</title>
+<meta name="description" content="Rendeld meg a Wihar FC hivatalos mezét a Vinteden.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#070A12">
+<link rel="icon" href="assets/favicon.png" type="image/png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="hdr solid">
+  <div class="wrap hdr-in">
+    <a class="brand" href="index.html"><img src="assets/logo.png" alt="" width="36" height="36"><span>WIHAR&nbsp;FC</span></a>
+    <nav class="nav"><a href="index.html#bolt">Bolt</a><a href="index.html#gyik">GYIK</a><a href="index.html#kapcsolat">Kapcsolat</a></nav>
+  </div>
+</header>
+
+<main class="wrap order">
+
+  <a class="back" href="index.html#bolt">← Vissza a mezhez</a>
+
+  <span class="eyebrow"><span class="dot"></span> Utolsó lépés</span>
+  <h1>MÉG EGY LÉPÉS<em>és a tiéd</em></h1>
+
+  <p class="lead">
+    Egyelőre <b>csak a Vinteden</b> tudsz rendelni — ott van a vásárlóvédelem, a fizetés és a szállítás is.
+    Alul kimásolod a rendelésed, a Vinteden pedig beilleszted. Ennyi.
+  </p>
+
+  <!-- ===== a rendelés ===== -->
+  <section class="card" id="orderCard">
+    <div class="card-hd">
+      <h2>A TE RENDELÉSED</h2>
+      <span class="ref" id="refTag"></span>
+    </div>
+
+    <div class="order-grid">
+      <div class="order-preview">
+        <div class="mini-shirt">
+          <img src="assets/jersey-back.webp" alt="A mez hátulja a te feliratoddal" width="1100" height="1213">
+          <svg viewBox="0 0 1100 1213" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+            <text class="pname" id="pvName" x="550" y="315" text-anchor="middle" font-size="137"></text>
+            <text class="pnum"  id="pvNum"  x="550" y="703" text-anchor="middle" font-size="462"></text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="order-facts">
+        <dl>
+          <dt>Termék</dt><dd>Wihar hivatalos mez</dd>
+          <dt>Szín</dt><dd>Sötétkék</dd>
+          <dt>Méret</dt><dd id="fSize">—</dd>
+          <dt>Felirat</dt><dd id="fName">—</dd>
+          <dt>Szám</dt><dd id="fNum">—</dd>
+          <dt>Ár</dt><dd id="fPrice">13 499 Ft</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== a másolandó szöveg ===== -->
+  <section class="card" id="copyCard">
+    <div class="card-hd">
+      <h2>1. MÁSOLD KI EZT</h2>
+    </div>
+    <p class="card-sub">Ezt kell beilleszteni a Vinteden — üzenetben vagy a hirdetés alá kommentben. Enélkül nem tudjuk, melyik mezt kéred.</p>
+
+    <textarea id="orderText" class="order-text" rows="9" readonly aria-label="A rendelésed szövege"></textarea>
+
+    <button class="btn btn-primary btn-copy" id="copyBtn" type="button">SZÖVEG MÁSOLÁSA</button>
+    <p class="hint" id="copyHint">Ha a másolás nem működik, jelöld ki a szöveget és másold kézzel.</p>
+  </section>
+
+  <!-- ===== vinted ===== -->
+  <section class="card">
+    <div class="card-hd">
+      <h2>2. IRÁNY A VINTED</h2>
+    </div>
+    <p class="card-sub">Megnyílik a Wihar FC Vinted profilja egy új lapon. A mez hirdetése ott van — írj rá, és illeszd be a kimásolt szöveget.</p>
+
+    <a class="btn btn-vinted" id="vintedBtn" href="https://www.vinted.hu/member/242944965-wihar-fc" target="_blank" rel="noopener noreferrer">
+      MEGNYITOM A VINTEDET →
+    </a>
+  </section>
+
+  <!-- ===== lépések ===== -->
+  <section class="card">
+    <div class="card-hd">
+      <h2>MI TÖRTÉNIK EZUTÁN?</h2>
+    </div>
+    <ol class="steps">
+      <li><b>Megkeresed a mez hirdetését</b> a Wihar FC Vinted profilján.</li>
+      <li><b>Írsz egy üzenetet</b> (vagy kommentet), és <b>beilleszted a kimásolt szöveget</b>. Ebben benne van a méret, a felirat, a szám és a rendelésazonosító.</li>
+      <li><b>Visszaigazoljuk</b> a feliratot, mielőtt bármi legyártásra kerül — ha elgépelted, itt még javítható.</li>
+      <li><b>Fizetsz a Vinteden</b>, a saját vásárlóvédelmével. Mi nem látjuk a kártyaadataidat.</li>
+      <li><b>Legyártjuk és elküldjük.</b> Az egyedi feliratozás miatt a gyártás a rendelési időszak lezárása után indul.</li>
+    </ol>
+  </section>
+
+  <p class="foot-note">
+    Kérdés? Írj: <a href="mailto:info@wiharfc.hu" data-email>info@wiharfc.hu</a> —
+    vagy nézd meg a <a href="index.html#gyik">GYIK-et</a>.
+  </p>
+
+</main>
+
+<footer class="ftr">
+  <div class="wrap ftr-bot">
+    <span>&copy; <span id="yr">2026</span> Wihar FC</span>
+    <span><a href="aszf.html">ÁSZF</a> · <a href="adatkezeles.html">Adatkezelés</a> · <a href="elallas.html">Elállás</a> · <a href="index.html">Vissza a boltba</a></span>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (s) { return document.querySelector(s); };
+  var q = new URLSearchParams(location.search);
+
+  var VINTED = $('#vintedBtn').getAttribute('href');
+  var size  = (q.get('meret') || '').trim();
+  var mode  = (q.get('mod')   || 'custom').trim();
+  var name  = (q.get('nev')   || '').trim().toUpperCase();
+  var num   = (q.get('szam')  || '').trim();
+  var price = parseInt(q.get('ar'), 10);
+  var ref   = (q.get('ref')   || '').trim();
+
+  if (!isFinite(price)) price = 13499;
+  var fmt = function (n) { return new Intl.NumberFormat('hu-HU').format(n) + ' Ft'; };
+
+  $('#yr').textContent = new Date().getFullYear();
+
+  // --- ha valaki közvetlenül nyitja meg a linket, küldjük vissza a boltba ---
+  if (!size) {
+    $('#orderCard').innerHTML =
+      '<div class="card-hd"><h2>NINCS KIVÁLASZTVA MEZ</h2></div>' +
+      '<p class="card-sub">Úgy tűnik, közvetlenül nyitottad meg ezt az oldalt. Állítsd be a méretet és a feliratot a boltban, ' +
+      'utána ide visszakerülsz a kész rendeléssel.</p>' +
+      '<a class="btn btn-primary" href="index.html#bolt">VISSZA A BOLTBA</a>';
+    $('#copyCard').hidden = true;
+    document.querySelector('.order .lead').textContent =
+      'Egyelőre csak a Vinteden tudsz rendelni. Állítsd össze a mezed a boltban, és a „Megrendelem” gombbal ide jutsz vissza a kész rendeléssel.';
+    $('#vintedBtn').addEventListener('click', function () {});
+    return;
+  }
+
+  var printed = (mode !== 'none') && (name || num);
+
+  $('#fSize').textContent  = size || '—';
+  $('#fName').textContent  = printed ? (name || '—') : 'felirat nélkül';
+  $('#fNum').textContent   = printed ? (num  || '—') : '—';
+  $('#fPrice').textContent = fmt(price);
+  $('#refTag').textContent = ref || '';
+
+  // élő előnézet a mez hátulján
+  var pvName = $('#pvName'), pvNum = $('#pvNum');
+  function fit(node, max) {
+    node.removeAttribute('textLength'); node.removeAttribute('lengthAdjust');
+    if (!node.textContent) return;
+    var w = 0;
+    try { w = node.getComputedTextLength(); } catch (e) { return; }
+    if (w > max) { node.setAttribute('textLength', max); node.setAttribute('lengthAdjust', 'spacingAndGlyphs'); }
+  }
+  function draw() {
+    pvName.textContent = printed ? name : '';
+    pvNum.textContent  = printed ? num  : '';
+    fit(pvName, 560); fit(pvNum, 620);
+  }
+  draw();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
+
+  // a kimásolható szöveg
+  var lines = [
+    'WIHAR FC — HIVATALOS MEZ RENDELÉS',
+    '',
+    'Méret:   ' + (size || '-'),
+    'Felirat: ' + (printed ? (name || '-') : 'felirat nélkül'),
+    'Szám:    ' + (printed ? (num || '-') : '-'),
+    'Szín:    Sötétkék',
+    'Ár:      ' + fmt(price),
+    '',
+    'Rendelésazonosító: ' + (ref || '-'),
+    '',
+    'Kérlek erősítsd meg a feliratot gyártás előtt. Köszi!'
+  ];
+  var text = lines.join('\n');
+  $('#orderText').value = text;
+
+  // másolás
+  var tt;
+  function toast(msg) {
+    var el = $('#toast');
+    el.textContent = msg; el.classList.add('on');
+    clearTimeout(tt); tt = setTimeout(function () { el.classList.remove('on'); }, 3000);
+  }
+  function legacyCopy() {
+    var ta = $('#orderText');
+    ta.removeAttribute('readonly');
+    ta.select(); ta.setSelectionRange(0, 99999);
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    ta.setAttribute('readonly', 'readonly');
+    return ok;
+  }
+  $('#copyBtn').addEventListener('click', function () {
+    var done = function (ok) {
+      if (ok) {
+        $('#copyBtn').textContent = '✓ KIMÁSOLVA';
+        toast('Kimásolva — most illeszd be a Vinteden!');
+        setTimeout(function () { $('#copyBtn').textContent = 'SZÖVEG MÁSOLÁSA'; }, 3000);
+      } else {
+        toast('Nem sikerült automatikusan. Jelöld ki a szöveget és másold kézzel.');
+        $('#orderText').select();
+      }
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(legacyCopy()); });
+    } else {
+      done(legacyCopy());
+    }
+  });
+
+  // ha a Vinted gombot nyomja anélkül, hogy másolt volna — figyelmeztetjük
+  $('#vintedBtn').addEventListener('click', function () {
+    toast('Ne felejtsd el beilleszteni a rendelési szöveget a Vinteden!');
+  });
+})();
+</script>
+</body>
+</html>
