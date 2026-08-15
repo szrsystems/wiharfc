@@ -1,0 +1,30 @@
+WIHAR FC — JAVÍTÁS
+==================
+
+MI VÁLTOZOTT
+  1. A név többé nem íródik visszafelé ("marci" -> MARCI, nem ICRAM)
+  2. A hosszú név arányosan kisebb lesz, hogy elférjen a mezen
+  3. A galériában csak a mez eleje és hátulja maradt
+
+FELTÖLTENDŐ — csak 4 fájl, a mappaszerkezettel együtt:
+     index.html
+     rendeles.html
+     css/style.css
+     js/app.js
+
+TÖRÖLNI MOST NEM KELL SEMMIT.
+
+HOGYAN (böngészőből)
+  A) https://github.dev/szrsystems/wiharfc
+  B) Húzd be ennek a mappának a tartalmát (2 fájl + css és js mappa).
+     Ha rákérdez: felülírás IGEN.
+  C) Bal oldalt "Source Control" -> üzenet, pl. "felirat javitas"
+     -> Commit & Push
+  D) A Render kb. 1 perc múlva magától frissít.
+
+ELLENŐRZÉS a https://wiharfc.onrender.com oldalon:
+  - gépeld be: marci   -> a mezen MARCI legyen
+  - gépeld be: nagymezoutca -> kisebb betűvel, de férjen el
+  - a kép alatt már csak 2 bélyegkép legyen (ELEJE / HÁTULJA)
+
+  Ha a régi verziót látod: Cmd+Shift+R (hard refresh).

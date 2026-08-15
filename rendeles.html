@@ -43,8 +43,8 @@
         <div class="mini-shirt">
           <img src="assets/jersey-back.webp" alt="A mez hátulja a te feliratoddal" width="1100" height="1213">
           <svg viewBox="0 0 1100 1213" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-            <text class="pname" id="pvName" x="550" y="315" text-anchor="middle" font-size="137"></text>
-            <text class="pnum"  id="pvNum"  x="550" y="703" text-anchor="middle" font-size="462"></text>
+            <text class="pname" id="pvName" x="550" y="315" text-anchor="middle" font-size="120"></text>
+            <text class="pnum"  id="pvNum"  x="550" y="703" text-anchor="middle" font-size="430"></text>
           </svg>
         </div>
       </div>
@@ -96,7 +96,7 @@
       <li><b>Megkeresed a mez hirdetését</b> a Wihar FC Vinted profilján.</li>
       <li><b>Írsz egy üzenetet</b> (vagy kommentet), és <b>beilleszted a kimásolt szöveget</b>. Ebben benne van a méret, a felirat, a szám és a rendelésazonosító.</li>
       <li><b>Visszaigazoljuk</b> a feliratot, mielőtt bármi legyártásra kerül — ha elgépelted, itt még javítható.</li>
-      <li><b>Fizetsz a Vinteden</b>, a saját vásárlóvédelmével. Mi nem látjuk a kártyaadataidat.</li>
+      <li><b>Fizetsz a Vinteden</b>, a Vinted saját vásárlóvédelmével. Mi nem látjuk a kártyaadataidat.</li>
       <li><b>Legyártjuk és elküldjük.</b> Az egyedi feliratozás miatt a gyártás a rendelési időszak lezárása után indul.</li>
     </ol>
   </section>
@@ -111,7 +111,7 @@
 <footer class="ftr">
   <div class="wrap ftr-bot">
     <span>&copy; <span id="yr">2026</span> Wihar FC</span>
-    <span><a href="aszf.html">ÁSZF</a> · <a href="adatkezeles.html">Adatkezelés</a> · <a href="elallas.html">Elállás</a> · <a href="index.html">Vissza a boltba</a></span>
+    <span><a href="index.html">Vissza a mezhez</a></span>
   </div>
 </footer>
 
@@ -160,17 +160,29 @@
 
   // élő előnézet a mez hátulján
   var pvName = $('#pvName'), pvNum = $('#pvNum');
-  function fit(node, max) {
-    node.removeAttribute('textLength'); node.removeAttribute('lengthAdjust');
+  var NAME = { base: 120, max: 520, min: 46 };
+  var NUM  = { base: 430, max: 600, min: 190 };
+  function fit(node, cfg) {
+    node.removeAttribute('textLength');
+    node.removeAttribute('lengthAdjust');
+    node.setAttribute('font-size', cfg.base);
     if (!node.textContent) return;
     var w = 0;
     try { w = node.getComputedTextLength(); } catch (e) { return; }
-    if (w > max) { node.setAttribute('textLength', max); node.setAttribute('lengthAdjust', 'spacingAndGlyphs'); }
+    if (w <= cfg.max) return;
+    var size = Math.max(cfg.min, Math.floor(cfg.base * cfg.max / w));
+    node.setAttribute('font-size', size);
+    try {
+      if (node.getComputedTextLength() > cfg.max) {
+        node.setAttribute('textLength', cfg.max);
+        node.setAttribute('lengthAdjust', 'spacingAndGlyphs');
+      }
+    } catch (e) {}
   }
   function draw() {
     pvName.textContent = printed ? name : '';
     pvNum.textContent  = printed ? num  : '';
-    fit(pvName, 560); fit(pvNum, 620);
+    fit(pvName, NAME); fit(pvNum, NUM);
   }
   draw();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);

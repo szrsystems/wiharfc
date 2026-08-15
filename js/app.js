@@ -100,6 +100,7 @@ const CONFIG = {
   /* ---------- contact links ---------- */
   $$('[data-email]').forEach(a => { a.href = 'mailto:' + CONFIG.EMAIL; a.textContent = CONFIG.EMAIL; });
   $$('[data-insta]').forEach(a => { a.href = CONFIG.INSTAGRAM; });
+  $$('[data-vinted]').forEach(a => { a.href = CONFIG.VINTED_URL; });
   $('#yr').textContent = new Date().getFullYear();
 
   /* ---------- price & stock ---------- */
@@ -119,14 +120,14 @@ const CONFIG = {
   }
 
   /* ---------- gallery ---------- */
-  const CAPS = ['MEZ ELEJE', 'MEZ HÁTULJA', 'VALÓS FOTÓ', 'VALÓS FOTÓ'];
+  const CAPS = ['MEZ ELEJE', 'MEZ HÁTULJA'];
   function goSlide(i) {
     $$('.slide').forEach(s => s.classList.toggle('on', +s.dataset.slide === i));
     $$('.thumb').forEach(t => {
       const on = +t.dataset.go === i;
       t.classList.toggle('on', on); t.setAttribute('aria-selected', String(on));
     });
-    $('#stageBadge').textContent = CAPS[i];
+    $('#stageBadge').textContent = CAPS[i] || '';
   }
   $$('.thumb').forEach(t => t.addEventListener('click', () => goSlide(+t.dataset.go)));
 
@@ -203,33 +204,54 @@ const CONFIG = {
     const d = (v || '').replace(/\D/g, '').slice(0, 2);
     return d;
   }
-  inName.addEventListener('input', () => {
-    const p = inName.selectionStart, before = inName.value;
-    inName.value = clean(before);
-    if (inName.value !== before) inName.setSelectionRange(Math.max(0, p - 1), Math.max(0, p - 1));
-    state.name = inName.value; goSlide(1); render();
-  });
-  inNum.addEventListener('input', () => {
-    inNum.value = digits(inNum.value);
-    state.num = inNum.value; goSlide(1); render();
-  });
+  // A kurzort CSAK akkor mozgatjuk, ha a tisztítás tényleg kivett karaktert.
+  // (A kisbetű→NAGYBETŰ csere nem változtat hosszt, ott maradnia kell a helyén.)
+  function bindClean(el, cleaner, after) {
+    el.addEventListener('input', () => {
+      const before = el.value;
+      const pos = el.selectionStart;
+      const cleaned = cleaner(before);
+      if (cleaned !== before) {
+        const removed = before.length - cleaned.length;
+        el.value = cleaned;
+        const np = Math.max(0, pos - (removed > 0 ? removed : 0));
+        try { el.setSelectionRange(np, np); } catch (e) { /* type=number stb. */ }
+      }
+      after(el.value);
+    });
+  }
+  bindClean(inName, clean,  v => { state.name = v; goSlide(1); render(); });
+  bindClean(inNum,  digits, v => { state.num  = v; goSlide(1); render(); });
 
-  /* ---------- live back print ---------- */
-  const NAME_MAX_W = 560, NUM_MAX_W = 620;
+  /* ---------- live back print ----------
+     A hosszú nevet NEM összenyomjuk, hanem arányosan kisebbre vesszük,
+     ahogy egy igazi mezen is történne. (viewBox: 0 0 1100 1213)      */
+  const NAME = { base: 120, max: 520, min: 46 };
+  const NUM  = { base: 430, max: 600, min: 190 };
   const nameNodes = [$('#pvName'), $('#mvName')].filter(Boolean);
   const numNodes  = [$('#pvNum'),  $('#mvNum')].filter(Boolean);
   function drawPrint() {
     const n = state.mode === 'none' ? '' : (state.name || '');
     const k = state.mode === 'none' ? '' : (state.num || '');
-    nameNodes.forEach(el => { el.textContent = n; fit(el, NAME_MAX_W); });
-    numNodes.forEach(el => { el.textContent = k; fit(el, NUM_MAX_W); });
+    nameNodes.forEach(el => { el.textContent = n; fit(el, NAME); });
+    numNodes.forEach(el => { el.textContent = k; fit(el, NUM); });
   }
-  function fit(node, max) {
-    node.removeAttribute('textLength'); node.removeAttribute('lengthAdjust');
+  function fit(node, cfg) {
+    node.removeAttribute('textLength');
+    node.removeAttribute('lengthAdjust');
+    node.setAttribute('font-size', cfg.base);
     if (!node.textContent) return;
     let w = 0;
     try { w = node.getComputedTextLength(); } catch (e) { return; }
-    if (w > max) { node.setAttribute('textLength', max); node.setAttribute('lengthAdjust', 'spacingAndGlyphs'); }
+    if (w <= cfg.max) return;
+    const size = Math.max(cfg.min, Math.floor(cfg.base * cfg.max / w));
+    node.setAttribute('font-size', size);
+    try {
+      if (node.getComputedTextLength() > cfg.max) {
+        node.setAttribute('textLength', cfg.max);
+        node.setAttribute('lengthAdjust', 'spacingAndGlyphs');
+      }
+    } catch (e) { /* nem baj */ }
   }
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawPrint);
 
